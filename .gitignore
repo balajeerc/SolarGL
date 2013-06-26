@@ -1,0 +1,7 @@
+*.exe
+*.exp
+*.ilk
+*.ncb
+*.log
+*.pdb
+*.vcproj.*.user

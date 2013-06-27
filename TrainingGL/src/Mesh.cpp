@@ -128,6 +128,12 @@ namespace SolarGL
         glBufferData(GL_ARRAY_BUFFER, _texCoords.size()*sizeof(GLfloat), &(_texCoords[0]), GL_STATIC_DRAW);
         Util::GLErrorAssert();
 
+        //Next bind the vertex normal data
+        glGenBuffers(1, &_normalBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, _normalBufferId);
+        glBufferData(GL_ARRAY_BUFFER, _normals.size()*sizeof(GLfloat), &(_normals[0]), GL_STATIC_DRAW);
+        Util::GLErrorAssert();
+
         //Finally bind the indices
         glGenBuffers(1,&_elementBufferId);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferId);

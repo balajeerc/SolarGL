@@ -27,6 +27,7 @@
 #define UTILFUNC
 
 typedef cml::matrix44f mat4;
+typedef cml::matrix33f mat3;
 typedef cml::vector3f vec3;
 typedef cml::vector2f vec2;
 

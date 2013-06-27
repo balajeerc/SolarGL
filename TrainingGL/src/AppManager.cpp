@@ -51,8 +51,8 @@ namespace SolarGL
         _mesh.prepare();
 
         //Setup the shaders
-		_shader.setSources("C:\\SolarGL\\data\\shaders\\SimpleImage_VS.glsl",
-                            "C:\\SolarGL\\data\\shaders\\SimpleImage_FS.glsl");
+        _shader.setSources("C:\\SolarGL\\data\\shaders\\PerPixelLighting_VS.glsl",
+                            "C:\\SolarGL\\data\\shaders\\PerPixelLighting_FS.glsl");
         _shader.prepare();
 
         //Setup the camera
@@ -60,7 +60,7 @@ namespace SolarGL
                                640.f/480.f,
                                1.f,
                                100.f);
-        _camera.lookAt(vec3(0.f,0.f,-10.f),  //camera location
+        _camera.lookAt(vec3(0.f,0.f, 5.f),  //camera location
                        vec3(0.f,0.f,0.f),   //target location
                        vec3(0.f,1.f,0.f));  //up direction
 

@@ -29,18 +29,56 @@ namespace SolarGL
         glUseProgram(shaderId);
         Util::GLErrorAssert();
 
-        //Get the entry point handles in the shader
-        int matrixLoc = glGetUniformLocation(shaderId, "ProjectionModelViewMatrix");
-        int vertexLoc = glGetAttribLocation(shaderId, "InVertex");
-        int texCoord0Loc = glGetAttribLocation(shaderId, "InTexCoord0");
-        int textureUniform = glGetUniformLocation(shaderId,"imgTexture");
-        
+        //Calculate the model view matrix
+        mat4 modelView = viewMatrix*_node->getLocalTransform();
+        mat4 modelViewInv = cml::inverse(modelView);
+        mat3 modelViewInv3x3;
+        matrix_linear_transform(modelViewInv3x3, modelViewInv);
+        modelViewInv3x3.transpose();
 
-        //Start by passing the transformation matrix to the shader
-        //Set the modelview projection matrix's uniform by multiplying
-        //the current modelview matrix with the transform of this renderable itself
-        mat4 currModelViewProjectionMatrix = projectionMatrix*viewMatrix*_node->getLocalTransform();
-        glUniformMatrix4fv(matrixLoc, 1, GL_FALSE, currModelViewProjectionMatrix.data());
+        //Calculate the model inv
+        mat4 modelInv = cml::inverse(_node->getLocalTransform()); 
+        mat3 modelInv3x3;
+        matrix_linear_transform(modelInv3x3, modelInv);
+        modelInv3x3.transpose();
+
+        //Caclulate view matrix inverse
+        mat4 viewInv = cml::inverse(viewMatrix);
+        viewInv.transpose();
+
+        mat4 modelMatrix = _node->getLocalTransform();
+        mat4 modelMatrixT = modelMatrix;
+        modelMatrixT.transpose();
+
+        mat4 viewMatrixT = viewMatrix;
+        viewMatrixT.transpose();
+
+        mat4 projectionMatrixT = projectionMatrix;
+        projectionMatrixT.transpose();
+
+        mat4 modelViewProjectionMatrix = projectionMatrix*viewMatrix*_node->getLocalTransform();
+        modelViewProjectionMatrix.transpose();
+
+        //Get the entry point handles in the shader
+        int modelMatLoc = glGetUniformLocation(shaderId, "m");
+        int viewMatLoc = glGetUniformLocation(shaderId, "v");
+        int projectionMatLoc = glGetUniformLocation(shaderId, "p");
+        int modelViewProjMat = glGetUniformLocation(shaderId, "mvpIn");
+        int invModelViewMatLoc = glGetUniformLocation(shaderId, "m_3x3_inv_transp");
+        int invViewMatLoc = glGetUniformLocation(shaderId, "v_inv");    
+
+        int vertexLoc = glGetAttribLocation(shaderId, "v_coord");
+        int normalLoc = glGetAttribLocation(shaderId, "v_normal");
+        int texCoord0Loc = glGetAttribLocation(shaderId, "v_texcoord");
+        int textureUniform = glGetUniformLocation(shaderId,"imgTexture");
+                
+        glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, modelMatrixT.data());
+        glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, viewMatrixT.data());
+        glUniformMatrix4fv(projectionMatLoc, 1, GL_FALSE, projectionMatrixT.data());
+        glUniformMatrix3fv(invModelViewMatLoc, 1, GL_FALSE, modelViewInv3x3.data());
+        glUniformMatrix4fv(invViewMatLoc, 1, GL_FALSE, viewInv.data());
+        glUniformMatrix4fv(modelViewProjMat, 1, GL_FALSE, modelViewProjectionMatrix.data());
+
         Util::GLErrorAssert();
 
         //Set the uniform variable for texture image in shader
@@ -60,6 +98,17 @@ namespace SolarGL
                               );
         glEnableVertexAttribArray(vertexLoc);
 
+        //Specify the normal data
+        glBindBuffer(GL_ARRAY_BUFFER, _mesh->getNormalBufferId());
+        glVertexAttribPointer(normalLoc,            //attribute
+                              3,                    //size
+                              GL_FLOAT,             //type
+                              GL_FALSE,             //not normalized
+                              sizeof(GLfloat)*3,    //stride
+                              (void*)0              //array buffer offset
+                              );
+        glEnableVertexAttribArray(normalLoc);
+
         //Specify the texture coordinates
         glBindBuffer(GL_ARRAY_BUFFER, _mesh->getTexCoordsBufferId());
         glVertexAttribPointer(texCoord0Loc,         //attribute
@@ -70,6 +119,8 @@ namespace SolarGL
                               (void*)0              //array buffer offset
                               );
         glEnableVertexAttribArray(texCoord0Loc);
+        Util::GLErrorAssert();
+
 
         //Bind the index buffer before initiating draw
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _mesh->getElementBufferId());
@@ -81,6 +132,7 @@ namespace SolarGL
 
         //Deactivate array buffers
         glDisableVertexAttribArray(vertexLoc);
+        glDisableVertexAttribArray(normalLoc);
         glDisableVertexAttribArray(texCoord0Loc);
 
         // bind with 0, so, switch back to normal pointer operation

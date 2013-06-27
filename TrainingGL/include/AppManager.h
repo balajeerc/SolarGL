@@ -4,6 +4,10 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Node.h"
+#include "Texture.h"
+#include "MeshRenderer.h"
+
 
 namespace SolarGL
 {
@@ -30,6 +34,10 @@ namespace SolarGL
         Camera _camera;
         Mesh _mesh;
         Shader _shader;
+        Texture _texture;
+        Node _node;
+        MeshRenderer _meshRenderer;
+
         mat4 _projectionModelView;
 
         /// brief   Glut annoyingly requires a C function for all its callbacks

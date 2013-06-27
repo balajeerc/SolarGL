@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)TrainingGL\include\&quot;;&quot;$(SolutionDir)TrainingGL\ext\freeglut\include\&quot;;&quot;$(SolutionDir)TrainingGL\ext\glew\include\&quot;;&quot;$(SolutionDir)\TrainingGL\ext\cml\&quot;;&quot;$(SolutionDir)\TrainingGL\ext\glm\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)TrainingGL\include\&quot;;&quot;$(SolutionDir)TrainingGL\ext\freeglut\include\&quot;;&quot;$(SolutionDir)TrainingGL\ext\glew\include\&quot;;&quot;$(SolutionDir)TrainingGL\ext\cml\&quot;;&quot;$(SolutionDir)TrainingGL\ext\soil\src&quot;;&quot;$(SolutionDir)TrainingGL\ext\picojson\include\&quot;;&quot;$(SolutionDir)TrainingGL\ext\glm\&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(SolutionDir)TrainingGL\ext\glew\lib\glew32.lib&quot; &quot;$(SolutionDir)TrainingGL\ext\freeglut\lib\freeglut.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)TrainingGL\ext\glew\lib\glew32.lib&quot; &quot;$(SolutionDir)TrainingGL\ext\freeglut\lib\freeglut.lib&quot; &quot;$(SolutionDir)TrainingGL\ext\soil\lib\SOIL.lib&quot;"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -182,6 +182,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Component.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
@@ -190,7 +194,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MeshRenderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Node.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Shader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Texture.cpp"
 				>
 			</File>
 		</Filter>
@@ -208,11 +224,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\Component.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\Mesh.h"
 				>
 			</File>
 			<File
+				RelativePath=".\include\MeshRenderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Node.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\Shader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Texture.h"
 				>
 			</File>
 			<File

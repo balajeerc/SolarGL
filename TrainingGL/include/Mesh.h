@@ -14,7 +14,7 @@ namespace SolarGL
         ~Mesh();
 
         /// \brief  Loads mesh data
-        void load();
+        void load(const char* filename);
 
         /// \brief  Prepares the mesh
         /// \detail This sets up/prepares the vertex buffers
@@ -26,14 +26,20 @@ namespace SolarGL
 
         inline GLuint& getVertexBufferId(){ return _vertexBufferId; }
         inline GLuint& getElementBufferId(){ return _elementBufferId; }
+        inline GLuint& getTexCoordsBufferId(){ return _texCoordsBufferId; }
+
+        inline int getNumVertices() const{ return _vertices.size(); }
+        inline int getNumFaceIndices() const{ return _faceIndices.size(); }
+        inline int getNumTexCoords() const{ return _texCoords.size(); }
 
     protected:
 		
         std::vector<GLfloat> _vertices;
         std::vector<GLuint> _faceIndices;
-        std::vector<vec2> _texCoords;
+        std::vector<GLfloat> _texCoords;
 
         GLuint _vertexBufferId;
         GLuint _elementBufferId;
+        GLuint _texCoordsBufferId;
     };
 }

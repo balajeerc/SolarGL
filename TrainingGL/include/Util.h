@@ -4,6 +4,9 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <map>
 
 //Extension wrangler
 #include <GL/glew.h>
@@ -13,6 +16,12 @@
 
 // Math library
 #include <cml/cml.h>
+
+//Image loading
+#include <soil.h>
+
+//JSON parsing library
+#include <picojson.h>
 
 #ifndef UTILFUNC
 #define UTILFUNC

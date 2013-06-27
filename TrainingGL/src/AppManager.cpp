@@ -45,11 +45,12 @@ namespace SolarGL
         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
         glColor3f(1.f, 1.f, 1.f);
 
-        _mesh.load();
+        //load the mesh    
+        _mesh.load("C:\\SolarGL\\data\\meshes\\suzanne_mesh.json");
         _mesh.prepare();
 
-		_shader.setSources("C:\\SolarGL\\data\\shaders\\Default_VS.glsl",
-                            "C:\\SolarGL\\data\\shaders\\Default_FS.glsl");
+		_shader.setSources("C:\\SolarGL\\data\\shaders\\SimpleImage_VS.glsl",
+                            "C:\\SolarGL\\data\\shaders\\SimpleImage_FS.glsl");
         _shader.prepare();
 
         _camera.setPerspective(45.f,
@@ -60,6 +61,13 @@ namespace SolarGL
         _camera.lookAt(vec3(0.f,0.f,10.f),  //camera location
                        vec3(0.f,0.f,0.f),   //target location
                        vec3(0.f,1.f,0.f));  //up direction
+
+        _texture.loadFromFile("C:\\SolarGL\\data\\images\\river.png");
+
+        _meshRenderer.setNode(&_node);
+        _meshRenderer.setTexture(&_texture);
+        _meshRenderer.setMesh(&_mesh);
+        _meshRenderer.setShader(&_shader);
 
         //Calculate ProjectionModelView matrix
         _projectionModelView = _camera.getProjectionMatrix()*_camera.getViewMatrix();
@@ -74,42 +82,8 @@ namespace SolarGL
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //Set the shader
-        glUseProgram(_shader.getShaderId());
-        Util::GLErrorAssert();
-
-        int loc = -1;
-        loc = glGetUniformLocation(_shader.getShaderId(), "ProjectionModelViewMatrix");
-        glUniformMatrix4fv(loc, 1, GL_FALSE, _projectionModelView.data());
-        Util::GLErrorAssert();
-
-        //Specify the vertex coordinates
-        int vertexLoc = glGetAttribLocation(_shader.getShaderId(), "InVertex");
-        glBindBuffer(GL_ARRAY_BUFFER, _mesh.getVertexBufferId());
-        glVertexAttribPointer(vertexLoc,            //attribute
-                              3,                    //size
-                              GL_FLOAT,             //type
-                              GL_FALSE,             //not normalized
-                              sizeof(GLfloat)*3,    //stride
-                              (void*)0              //array buffer offset
-                              );
-        glEnableVertexAttribArray(vertexLoc);
-
-        //Bind the index buffer before initiating draw
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _mesh.getElementBufferId());
-        Util::GLErrorAssert();
-
-        // Draw 2 triangles using just bound(activated) index array
-        glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-        Util::GLErrorAssert();
-
-        //Deactivate array buffers
-        glDisableVertexAttribArray(vertexLoc);
-
-        // bind with 0, so, switch back to normal pointer operation
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        Util::GLErrorAssert();
+        _meshRenderer.renderMesh(_camera.getProjectionMatrix(),
+                                 _camera.getViewMatrix());
 
         //Swap buffers
         glutSwapBuffers();

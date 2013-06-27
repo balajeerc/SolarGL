@@ -103,39 +103,22 @@ namespace SolarGL
        }
     }
 
-    void Shader::_readShaderSource(const char* filename, std::string& output)
+    void Shader::_readShaderSource(const char* filename, std::string& contents)
     {
-        FILE* pShaderFile;
-        pShaderFile = fopen(filename, "r");
-        if (pShaderFile==NULL)
-        {
-            printf("For file named:%s\n",filename);
-            assert(false);
+        std::ifstream meshFile(filename, std::ios::in | std::ios::binary);
+        if (meshFile)
+        {	
+	        meshFile.seekg(0, std::ios::end);
+	        contents.resize(meshFile.tellg());
+	        meshFile.seekg(0, std::ios::beg);
+	        meshFile.read(&contents[0], contents.size());
+	        meshFile.close();
         }
-
-        //Obtain length of source
-        fseek (pShaderFile , 0 , SEEK_END);
-        int shaderLength = ftell (pShaderFile);
-        rewind (pShaderFile);
-
-        //Allocate memory for source
-        char* source = new char[shaderLength+1];
-
-        //Copy the file's contents over
-        int num_read = fread(source,1,shaderLength,pShaderFile);
-		source[shaderLength] = '\0';
-
-        //Close the file now that we are done with it
-        fclose (pShaderFile);
-
-        if (num_read != shaderLength)
+        else
         {
-            printf("DW_ERROR: While reading file: %s", filename);
-            assert(false);
+	        printf("ERROR: Cannot find mesh file!");
+	        exit(1);
         }
-
-        output = std::string(source);
-        delete [] source;
     }
 
     void Shader::_getErrorLog(int shaderId)

@@ -235,7 +235,7 @@ int main(int argc, char* argv[])
 //	DWGLErrorAssert();
 //	
 //	// Draw 2 triangles using just bound(activated) index array
-//	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 //	DWGLErrorAssert();
 //	
 //	//Deactivate array buffers

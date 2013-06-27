@@ -25,26 +25,31 @@ namespace SolarGL
         }
 
         //Set the shader
-        glUseProgram(_shader->getShaderId());
+        int shaderId = _shader->getShaderId();
+        glUseProgram(shaderId);
         Util::GLErrorAssert();
+
+        //Get the entry point handles in the shader
+        int matrixLoc = glGetUniformLocation(shaderId, "ProjectionModelViewMatrix");
+        int vertexLoc = glGetAttribLocation(shaderId, "InVertex");
+        int texCoord0Loc = glGetAttribLocation(shaderId, "InTexCoord0");
+        int textureUniform = glGetUniformLocation(shaderId,"imgTexture");
+        
 
         //Start by passing the transformation matrix to the shader
         //Set the modelview projection matrix's uniform by multiplying
         //the current modelview matrix with the transform of this renderable itself
-        int matrixLoc = glGetUniformLocation(_shader->getShaderId(), "ProjectionModelViewMatrix");
         mat4 currModelViewProjectionMatrix = projectionMatrix*viewMatrix*_node->getLocalTransform();
         glUniformMatrix4fv(matrixLoc, 1, GL_FALSE, currModelViewProjectionMatrix.data());
         Util::GLErrorAssert();
 
         //Set the uniform variable for texture image in shader
-        int textureUniform = glGetUniformLocation(_shader->getShaderId(),"imgTexture");
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _texture->getTextureId());
         glUniform1i(textureUniform, 0);
         Util::GLErrorAssert();
 
         //Specify the vertex coordinates
-        int vertexLoc = glGetAttribLocation(_shader->getShaderId(), "InVertex");
         glBindBuffer(GL_ARRAY_BUFFER, _mesh->getVertexBufferId());
         glVertexAttribPointer(vertexLoc,            //attribute
                               3,                    //size
@@ -56,7 +61,6 @@ namespace SolarGL
         glEnableVertexAttribArray(vertexLoc);
 
         //Specify the texture coordinates
-        int texCoord0Loc = glGetAttribLocation(_shader->getShaderId(), "InTexCoord0");
         glBindBuffer(GL_ARRAY_BUFFER, _mesh->getTexCoordsBufferId());
         glVertexAttribPointer(texCoord0Loc,         //attribute
                               2,                    //size 

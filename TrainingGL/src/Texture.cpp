@@ -38,6 +38,10 @@ namespace SolarGL
         int numBytes = _height*_width*_channelCount;
         _buffer.assign(ht_map, ht_map+numBytes);
         
+        float htmapVal = *(ht_map+432);
+        float buffVal = _buffer[432];
+        assert(htmapVal==buffVal);
+
         //Deallocate the memory taken up by SOIL
         SOIL_free_image_data( ht_map ); 
     }

@@ -49,21 +49,25 @@ namespace SolarGL
         _mesh.load("C:\\SolarGL\\data\\meshes\\suzanne_mesh.json");
         _mesh.prepare();
 
+        //Setup the shaders
 		_shader.setSources("C:\\SolarGL\\data\\shaders\\SimpleImage_VS.glsl",
                             "C:\\SolarGL\\data\\shaders\\SimpleImage_FS.glsl");
         _shader.prepare();
 
+        //Setup the camera
         _camera.setPerspective(45.f,
                                640.f/480.f,
                                1.f,
                                100.f);
-
         _camera.lookAt(vec3(0.f,0.f,10.f),  //camera location
                        vec3(0.f,0.f,0.f),   //target location
                        vec3(0.f,1.f,0.f));  //up direction
 
+        //Setup texture
         _texture.loadFromFile("C:\\SolarGL\\data\\images\\river.png");
+        _texture.prepare();
 
+        //Setup the mesh renderer
         _meshRenderer.setNode(&_node);
         _meshRenderer.setTexture(&_texture);
         _meshRenderer.setMesh(&_mesh);

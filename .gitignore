@@ -4,4 +4,5 @@
 *.ncb
 *.log
 *.pdb
+*.obj
 *.vcproj.*.user

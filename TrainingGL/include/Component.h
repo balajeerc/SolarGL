@@ -12,6 +12,5 @@ namespace SolarGL
 
         /// \brief  Gets a component of this node by name
         void addComponent(const std::string& name, const Component& component);
-
     };
 }

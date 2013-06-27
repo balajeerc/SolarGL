@@ -40,6 +40,7 @@ namespace SolarGL
         std::vector<GLfloat> _texCoords;
         std::vector<GLfloat> _normals;   
         std::vector<GLuint> _faceIndices;
+        std::vector<GLfloat> _faceNormals;
 
         GLuint _vertexBufferId;
         GLuint _normalBufferId;

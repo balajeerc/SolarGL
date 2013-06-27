@@ -83,6 +83,20 @@ namespace SolarGL
 			        _faceIndices.push_back(v3);
 		        }
 	        }
+            else if(childname.compare("face_normals")==0)
+	        {
+		        picojson::array facelist = child.get<picojson::array>();
+		        for (picojson::value::array::const_iterator face = facelist.begin(); face != facelist.end(); ++face)
+		        {
+			        picojson::array vertindices = face->get<picojson::array>();
+			        float nx = (float)vertindices[0].get<double>();
+			        float ny = (float)vertindices[1].get<double>();
+			        float nz = (float)vertindices[2].get<double>();
+			        _faceNormals.push_back(nx);
+			        _faceNormals.push_back(ny);
+			        _faceNormals.push_back(nz);
+		        }
+	        }
 	        else if((childname.compare("texture_coords")==0))
 	        {
 		        picojson::array texcoordslist = child.get<picojson::array>();
@@ -97,32 +111,7 @@ namespace SolarGL
 	        }
         }
 
-  //      float planeWidth = 10;
-  //      float planeHeight = 10;
-  //      float planeVertices[] =
-		//{
-		//	-planeWidth/2, -planeHeight/2, 0.f,
-		//	planeWidth/2, -planeHeight/2, 0.f,
-		//	planeWidth/2,  planeHeight/2, 0.f,
-		//	-planeWidth/2,  planeHeight/2, 0.f 
-		//};
-		//_vertices.assign(planeVertices, planeVertices+12);
-
-  //      GLuint planeIndices[] =
-  //      {
-  //          0, 3, 1,
-  //          3, 2, 1
-  //      };
-  //      _faceIndices.assign(planeIndices, planeIndices+6);
-
-  //      float planeTexCoords[] = 
-  //      {
-  //          0.f, 1.f,
-  //          1.f, 1.f,
-  //          1.f, 0.f,
-  //          0.f, 0.f
-  //      };
-  //      _texCoords.assign(planeTexCoords, planeTexCoords+8);
+        generateVertexNormals(90.f);
     }
 
     void Mesh::prepare()
@@ -158,35 +147,65 @@ namespace SolarGL
         // clear any previously cached normals
         _normals.clear();
 
-        //First we iterate over all the faces and generate face normals
-        //for each face in our mesh
-        for(int i=0; i<(_faceIndices.size()/3); ++i)
-        {
-
-        }
+        int numVerts = _vertices.size()/3;
+        int numFaces = _faceIndices.size()/3;
 
         //Here we create a temporary list of face indices for each vertex
         //That is, a list of lists, where for each vertex, we have a list of
         //indices of the faces it belongs to
         std::vector< std::vector<int> > facesPerVertex;
-        for(int i=0; i<_vertices.size(); ++i)
+        std::vector< std::vector<vec3> > faceNormalsPerVertex;
+        for(int i=0; i<numVerts; ++i)
         {
-            std::vector<int> faceIndices;
-            facesPerVertex.push_back(faceIndices);
+            //Create an empty list of face indices
+            std::vector<int> faceList;
+            facesPerVertex.push_back(faceList);
 
-            //We iterate over every face in the face list
-            //and find all the triangles that this vertex belongs to
-            for(int j=0; j<(_faceIndices.size()/3); ++j)
-            {
-                int vert1 = _faceIndices[3*j];
-                int vert2 = _faceIndices[3*j+1];
-                int vert3 = _faceIndices[3*j+2];
-                if(vert1==i || vert2==i || vert3==i)
-                {
-                    faceIndices.push_back(j);
-                }
-            }
+            //Create an empty list of normals
+            std::vector<vec3> normalList;
+            faceNormalsPerVertex.push_back(normalList);
         }
+
+        //First we iterate over all the faces and generate face normals
+        //for each face in our mesh
+        for(int i=0; i<numFaces; ++i)
+        {
+            int vertIndex1 = _faceIndices[3*i];
+            int vertIndex2 = _faceIndices[3*i+1];
+            int vertIndex3 = _faceIndices[3*i+2];
+
+            //Register that face with index i, is part of the faceLists
+            //for each of the above vertices
+            facesPerVertex[vertIndex1].push_back(i);
+            facesPerVertex[vertIndex2].push_back(i);
+            facesPerVertex[vertIndex3].push_back(i);
+
+            vec3 faceNormal(_faceNormals[3*i+0],
+                            _faceNormals[3*i+1],
+                            _faceNormals[3*i+2]);
+            faceNormalsPerVertex[vertIndex1].push_back(faceNormal);
+            faceNormalsPerVertex[vertIndex2].push_back(faceNormal);
+            faceNormalsPerVertex[vertIndex3].push_back(faceNormal);
+        }
+
+        //Now we have a list of faces per vertex
+        //We also have a list of face normals per vertex
+        //We can now calculate the average normal
+        for(int i=0; i<numVerts; ++i)
+        {
+            std::vector<vec3> normals = faceNormalsPerVertex[i];
+            vec3 normalSum(0.f, 0.f, 0.f);
+            for(int j=0; j<normals.size(); ++j)
+            {
+                normalSum += normals[j];    
+            }
+            normalSum.normalize();
+            float* normCoords = normalSum.data();
+            _normals.push_back(normCoords[0]);
+            _normals.push_back(normCoords[1]);
+            _normals.push_back(normCoords[2]);
+        }
+
     }
 
 }

@@ -40,9 +40,10 @@ namespace SolarGL
           exit(1);
         }
 
-		glFrontFace(GL_CW);
-        glDisable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+		glFrontFace(GL_CCW);
+        //glDisable(GL_CULL_FACE);
+        //glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+        glPolygonMode(GL_FRONT,GL_FILL);
         glColor3f(1.f, 1.f, 1.f);
 
         //load the mesh    
@@ -64,7 +65,7 @@ namespace SolarGL
                        vec3(0.f,1.f,0.f));  //up direction
 
         //Setup texture
-        _texture.loadFromFile("C:\\SolarGL\\data\\images\\river.png");
+        _texture.loadFromFile("C:\\SolarGL\\data\\images\\gray.png");
         _texture.prepare();
 
         //Setup the mesh renderer

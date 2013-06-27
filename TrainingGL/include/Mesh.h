@@ -25,6 +25,7 @@ namespace SolarGL
                     const mat4& projectionMatrix);
 
         inline GLuint& getVertexBufferId(){ return _vertexBufferId; }
+        inline GLuint& getNormalBufferId(){ return _normalBufferId; }
         inline GLuint& getElementBufferId(){ return _elementBufferId; }
         inline GLuint& getTexCoordsBufferId(){ return _texCoordsBufferId; }
 
@@ -33,12 +34,15 @@ namespace SolarGL
         inline int getNumTexCoords() const{ return _texCoords.size(); }
 
     protected:
-		
+		void generateVertexNormals(const float& smoothingAngle);
+
         std::vector<GLfloat> _vertices;
-        std::vector<GLuint> _faceIndices;
         std::vector<GLfloat> _texCoords;
+        std::vector<GLfloat> _normals;   
+        std::vector<GLuint> _faceIndices;
 
         GLuint _vertexBufferId;
+        GLuint _normalBufferId;
         GLuint _elementBufferId;
         GLuint _texCoordsBufferId;
     };

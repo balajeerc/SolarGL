@@ -149,4 +149,44 @@ namespace SolarGL
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
+
+    void Mesh::generateVertexNormals(const float& smoothingAngle)
+    {
+        // calculate the cosine of the angle (in degrees)
+        float cos_angle = cos(smoothingAngle * M_PI / 180.0);
+
+        // clear any previously cached normals
+        _normals.clear();
+
+        //First we iterate over all the faces and generate face normals
+        //for each face in our mesh
+        for(int i=0; i<(_faceIndices.size()/3); ++i)
+        {
+
+        }
+
+        //Here we create a temporary list of face indices for each vertex
+        //That is, a list of lists, where for each vertex, we have a list of
+        //indices of the faces it belongs to
+        std::vector< std::vector<int> > facesPerVertex;
+        for(int i=0; i<_vertices.size(); ++i)
+        {
+            std::vector<int> faceIndices;
+            facesPerVertex.push_back(faceIndices);
+
+            //We iterate over every face in the face list
+            //and find all the triangles that this vertex belongs to
+            for(int j=0; j<(_faceIndices.size()/3); ++j)
+            {
+                int vert1 = _faceIndices[3*j];
+                int vert2 = _faceIndices[3*j+1];
+                int vert3 = _faceIndices[3*j+2];
+                if(vert1==i || vert2==i || vert3==i)
+                {
+                    faceIndices.push_back(j);
+                }
+            }
+        }
+    }
+
 }

@@ -6,8 +6,8 @@ namespace SolarGL
     {
     }
 
-    void Shader::setSources(const char* vertexShaderPath,
-                            const char* fragmentShaderPath)
+    void Shader::load(const char* vertexShaderPath,
+                      const char* fragmentShaderPath)
     {
         _vertexShaderPath = std::string(vertexShaderPath);
         _fragmentShaderPath = std::string(fragmentShaderPath);

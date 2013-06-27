@@ -11,7 +11,7 @@ namespace SolarGL
             
     }
         
-    void Texture::loadFromFile(const char* filename)
+    void Texture::load(const char* filename)
     {
         int width, height, channels;
         unsigned char *ht_map = SOIL_load_image(filename,

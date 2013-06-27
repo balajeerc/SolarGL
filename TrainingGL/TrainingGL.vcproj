@@ -194,11 +194,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\MeshRenderer.cpp"
+				RelativePath=".\src\Model.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\Node.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ResourceManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Scene.cpp"
 				>
 			</File>
 			<File
@@ -232,11 +240,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\MeshRenderer.h"
+				RelativePath=".\include\Model.h"
 				>
 			</File>
 			<File
 				RelativePath=".\include\Node.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\ResourceManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Scene.h"
 				>
 			</File>
 			<File

@@ -51,8 +51,8 @@ namespace SolarGL
         _mesh.prepare();
 
         //Setup the shaders
-        _shader.setSources("C:\\SolarGL\\data\\shaders\\PerPixelLighting_VS.glsl",
-                            "C:\\SolarGL\\data\\shaders\\PerPixelLighting_FS.glsl");
+        _shader.load("C:\\SolarGL\\data\\shaders\\PerPixelLighting_VS.glsl",
+                    "C:\\SolarGL\\data\\shaders\\PerPixelLighting_FS.glsl");
         _shader.prepare();
 
         //Setup the camera
@@ -65,14 +65,14 @@ namespace SolarGL
                        vec3(0.f,1.f,0.f));  //up direction
 
         //Setup texture
-        _texture.loadFromFile("C:\\SolarGL\\data\\images\\gray.png");
+        _texture.load("C:\\SolarGL\\data\\images\\gray.png");
         _texture.prepare();
 
         //Setup the mesh renderer
-        _meshRenderer.setNode(&_node);
-        _meshRenderer.setTexture(&_texture);
-        _meshRenderer.setMesh(&_mesh);
-        _meshRenderer.setShader(&_shader);
+        _model.setNode(&_node);
+        _model.setTexture(&_texture);
+        _model.setMesh(&_mesh);
+        _model.setShader(&_shader);
 
         //Calculate ProjectionModelView matrix
         _projectionModelView = _camera.getProjectionMatrix()*_camera.getViewMatrix();
@@ -87,7 +87,7 @@ namespace SolarGL
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        _meshRenderer.renderMesh(_camera.getProjectionMatrix(),
+        _model.renderMesh(_camera.getProjectionMatrix(),
                                  _camera.getViewMatrix());
 
         //Swap buffers

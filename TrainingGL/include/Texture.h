@@ -25,7 +25,7 @@ namespace SolarGL
         std::vector<unsigned char>& getBuffer(){ return _buffer; }
         
         /// \brief  loads a texture from a given file
-        void loadFromFile(const char* filename);
+        void load(const char* filename);
                 
         /// \brief Prepare a texture for texture mapping
         void prepare();

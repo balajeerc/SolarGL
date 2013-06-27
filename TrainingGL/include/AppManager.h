@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "Node.h"
 #include "Texture.h"
-#include "MeshRenderer.h"
+#include "Model.h"
 
 
 namespace SolarGL
@@ -36,7 +36,7 @@ namespace SolarGL
         Shader _shader;
         Texture _texture;
         Node _node;
-        MeshRenderer _meshRenderer;
+        Model _model;
 
         mat4 _projectionModelView;
 

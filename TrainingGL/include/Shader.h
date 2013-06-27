@@ -12,8 +12,8 @@ namespace SolarGL
         Shader();
 
         /// \brief  Sets the filepaths for vertex and fragment shader programs
-        void setSources(const char* vertexShaderPath,
-                        const char* fragmentShaderPath);
+        void load(const char* vertexShaderPath,
+                  const char* fragmentShaderPath);
 
         /// \brief  Compiles and links the shaders; assigns shader ids
         void prepare();

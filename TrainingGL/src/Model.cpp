@@ -3,11 +3,11 @@
 #include "Texture.h"
 #include "Node.h"
 
-#include "MeshRenderer.h"
+#include "Model.h"
 
 namespace SolarGL
 {
-    MeshRenderer::MeshRenderer():
+    Model::Model():
     _mesh(NULL),
     _texture(NULL),
     _shader(NULL),
@@ -15,7 +15,7 @@ namespace SolarGL
     {
     }
 
-    void MeshRenderer::renderMesh(const mat4& projectionMatrix,
+    void Model::renderMesh(const mat4& projectionMatrix,
                                   const mat4& viewMatrix)
     {
         if((!_mesh) || (!_texture) || (!_shader) || (!_node))

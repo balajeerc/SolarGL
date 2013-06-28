@@ -12,7 +12,26 @@ namespace SolarGL
 
     ResourceManager::~ResourceManager()
     {
-        
+        std::map<std::string, Shader*>::iterator itsh;
+        for(itsh=_shaders.begin(); itsh!=_shaders.end(); ++itsh)
+        {
+            Shader* iterShader = itsh->second;
+            delete iterShader;
+        }
+
+        std::map<std::string, Mesh*>::iterator itmh;
+        for(itmh=_meshes.begin(); itmh!=_meshes.end(); ++itmh)
+        {
+            Mesh* iterMesh = itmh->second;
+            delete iterMesh;
+        }
+
+        std::map<std::string, Texture*>::iterator ittx;
+        for(ittx=_textures.begin(); ittx!=_textures.end(); ++ittx)
+        {
+            Texture* iterTexture = ittx->second;
+            delete iterTexture;
+        }
     }
 
     Shader* ResourceManager::getShader(const char* vertexShaderPath, const char* fragmentShaderPath)

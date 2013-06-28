@@ -1,13 +1,7 @@
 #pragma once
 
 #include "Util.h"
-#include "Camera.h"
-#include "Mesh.h"
-#include "Shader.h"
-#include "Node.h"
-#include "Texture.h"
-#include "Model.h"
-
+#include "Scene.h"
 
 namespace SolarGL
 {
@@ -31,14 +25,7 @@ namespace SolarGL
     protected:
         static AppManager* _mainInstance;
 
-        Camera _camera;
-        Mesh _mesh;
-        Shader _shader;
-        Texture _texture;
-        Node _node;
-        Model _model;
-
-        mat4 _projectionModelView;
+        Scene _scene;
 
         /// brief   Glut annoyingly requires a C function for all its callbacks
         static void OnDisplay();

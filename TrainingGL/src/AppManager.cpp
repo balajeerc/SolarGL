@@ -18,6 +18,7 @@ namespace SolarGL
     AppManager::~AppManager()
     {
 
+
     }
 
     void AppManager::initApplication(int argc, char* argv[])
@@ -41,42 +42,14 @@ namespace SolarGL
         }
 
 		glFrontFace(GL_CCW);
+        glEnable(GL_DEPTH_TEST);
         //glDisable(GL_CULL_FACE);
         //glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
         glPolygonMode(GL_FRONT,GL_FILL);
         glColor3f(1.f, 1.f, 1.f);
 
-        //load the mesh    
-        _mesh.load("C:\\SolarGL\\data\\meshes\\suzanne_mesh.json");
-        _mesh.prepare();
-
-        //Setup the shaders
-        _shader.load("C:\\SolarGL\\data\\shaders\\PerPixelLighting_VS.glsl",
-                    "C:\\SolarGL\\data\\shaders\\PerPixelLighting_FS.glsl");
-        _shader.prepare();
-
-        //Setup the camera
-        _camera.setPerspective(45.f,
-                               640.f/480.f,
-                               1.f,
-                               100.f);
-        _camera.lookAt(vec3(0.f,0.f, 5.f),  //camera location
-                       vec3(0.f,0.f,0.f),   //target location
-                       vec3(0.f,1.f,0.f));  //up direction
-
-        //Setup texture
-        _texture.load("C:\\SolarGL\\data\\images\\gray.png");
-        _texture.prepare();
-
-        //Setup the mesh renderer
-        _model.setNode(&_node);
-        _model.setTexture(&_texture);
-        _model.setMesh(&_mesh);
-        _model.setShader(&_shader);
-
-        //Calculate ProjectionModelView matrix
-        _projectionModelView = _camera.getProjectionMatrix()*_camera.getViewMatrix();
-
+        _scene.prepare();
+            
         glutDisplayFunc(AppManager::OnDisplay);
         glutMainLoop();
     }
@@ -87,8 +60,7 @@ namespace SolarGL
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        _model.renderMesh(_camera.getProjectionMatrix(),
-                                 _camera.getViewMatrix());
+        _scene.update(0.f);
 
         //Swap buffers
         glutSwapBuffers();

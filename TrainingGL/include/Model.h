@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Util.h"
+#include "Node.h"
 
 namespace SolarGL
 {
-    class Node;
     class Mesh;
     class Shader;
     class Texture;
@@ -14,8 +14,7 @@ namespace SolarGL
     public:
         Model();
     
-        inline void setNode(Node* node){ _node = node; }
-        Node* getNode() const{  return _node; }
+        Node* getNode() {  return &_node; }
 
         inline void setMesh(Mesh* mesh){ _mesh = mesh; }
         Mesh* getMesh() const{  return _mesh; }
@@ -26,8 +25,10 @@ namespace SolarGL
         inline void setShader(Shader* shader){ _shader = shader; }
         Shader* getShader() const{  return _shader; }
 
-        void renderMesh(const mat4& projectionMatrix,
-                        const mat4& viewMatrix);
+        virtual void update(const double& timeElapsed);
+
+        virtual void render(const mat4& projectionMatrix,
+                           const mat4& viewMatrix);
 
     protected:
         /// \brief mesh that this renderer will draw
@@ -40,7 +41,7 @@ namespace SolarGL
         Shader* _shader;
 
         /// \node node that mesh renderer is bound by
-        Node* _node;
+        Node _node;
 
     };
 }

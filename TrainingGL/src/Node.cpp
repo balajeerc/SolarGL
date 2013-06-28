@@ -2,7 +2,8 @@
 
 namespace SolarGL
 {
-    Node::Node()
+    Node::Node():
+    _parent(NULL)
     {
         _transform.identity();
     }

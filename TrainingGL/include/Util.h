@@ -1,6 +1,9 @@
+#define PI 3.141592653589793238462643383
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 #include <vector>
 #include <string>

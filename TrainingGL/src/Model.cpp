@@ -10,15 +10,20 @@ namespace SolarGL
     Model::Model():
     _mesh(NULL),
     _texture(NULL),
-    _shader(NULL),
-    _node(NULL)
+    _shader(NULL)
     {
+
     }
 
-    void Model::renderMesh(const mat4& projectionMatrix,
-                                  const mat4& viewMatrix)
+    void Model::update(const double& timeElapsed)
     {
-        if((!_mesh) || (!_texture) || (!_shader) || (!_node))
+
+    }
+
+    void Model::render(const mat4& projectionMatrix,
+                       const mat4& viewMatrix)
+    {
+        if((!_mesh) || (!_texture) || (!_shader))
         {
             //Skip render
             return;
@@ -29,15 +34,19 @@ namespace SolarGL
         glUseProgram(shaderId);
         Util::GLErrorAssert();
 
+        mat4 modelMatrix;
+        _node.getWorldTransform(modelMatrix);
+        //modelMatrix = _node->getLocalTransform();
+
         //Calculate the model view matrix
-        mat4 modelView = viewMatrix*_node->getLocalTransform();
+        mat4 modelView = viewMatrix*modelMatrix;
         mat4 modelViewInv = cml::inverse(modelView);
         mat3 modelViewInv3x3;
         matrix_linear_transform(modelViewInv3x3, modelViewInv);
         modelViewInv3x3.transpose();
 
         //Calculate the model inv
-        mat4 modelInv = cml::inverse(_node->getLocalTransform()); 
+        mat4 modelInv = cml::inverse(modelMatrix); 
         mat3 modelInv3x3;
         matrix_linear_transform(modelInv3x3, modelInv);
         modelInv3x3.transpose();
@@ -46,7 +55,7 @@ namespace SolarGL
         mat4 viewInv = cml::inverse(viewMatrix);
         viewInv.transpose();
 
-        mat4 modelMatrix = _node->getLocalTransform();
+        
         mat4 modelMatrixT = modelMatrix;
         modelMatrixT.transpose();
 
@@ -56,7 +65,7 @@ namespace SolarGL
         mat4 projectionMatrixT = projectionMatrix;
         projectionMatrixT.transpose();
 
-        mat4 modelViewProjectionMatrix = projectionMatrix*viewMatrix*_node->getLocalTransform();
+        mat4 modelViewProjectionMatrix = projectionMatrix*viewMatrix*modelMatrix;
         modelViewProjectionMatrix.transpose();
 
         //Get the entry point handles in the shader

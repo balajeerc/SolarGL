@@ -48,6 +48,16 @@ namespace SolarGL
         void rotate(const vec3& rotation)
         {
             mat4 temp = _transform;
+            float* m = _transform.data();
+
+            //Cache the translation
+            vec3 t = vec3(m[3],
+                          m[7],
+                          m[11]);
+            m[3] = 0.f;
+            m[7] = 0.f;
+            m[11] = 0.f;
+
             mat4 rotaMat;
             rotaMat.identity();
             const float degToRadian = (float)PI/180.f;
@@ -56,7 +66,11 @@ namespace SolarGL
                                   rotation.data()[1] * degToRadian,
                                   rotation.data()[2] * degToRadian,
                                   cml::euler_order_xyz);
+
             _transform = rotaMat*temp;
+            m[3] = t.data()[0];
+            m[7] = t.data()[1];
+            m[11] = t.data()[2];
         }
 
     protected:

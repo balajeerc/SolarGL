@@ -30,7 +30,10 @@ namespace SolarGL
         virtual void render(const mat4& projectionMatrix,
                            const mat4& viewMatrix);
 
-        
+        //HACK
+        //We define some public variables for implementing rotation
+        //Remove this before adapting into standalone scenegraph
+        float rotationSpeed;
 
     protected:
         /// \brief mesh that this renderer will draw

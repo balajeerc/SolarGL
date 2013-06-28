@@ -16,9 +16,9 @@ struct lightSource
 };
 
 lightSource light0 = lightSource(
-	vec4(0.0,  0.0,  0.0, 1.0),
-	vec4(1.0,  1.0,  0.0, 1.0),
-	vec4(1.0,  1.0,  1.0, 1.0),
+	vec4(0.0,  0.0,  0.0, 1.0),		//position
+	vec4(0.8,  0.7,  0.33, 1.0),		//diffuse	
+	vec4(1.0,  1.0,  1.0, 1.0),		//specular
 	0.0, 0.05, 0.0,
 	180.0, 0.0,
 	vec3(0.0, 0.0, 0.0)

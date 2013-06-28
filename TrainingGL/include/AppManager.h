@@ -2,6 +2,7 @@
 
 #include "Util.h"
 #include "Scene.h"
+#include "AppClock.h"
 
 namespace SolarGL
 {
@@ -22,12 +23,19 @@ namespace SolarGL
         /// \brief  Main loop for the application
         void update();
 
+        /// \brief  Returns a pointer to the timer
+        AppClock& getTimer(){ return _timer; }
+
     protected:
         static AppManager* _mainInstance;
 
         Scene _scene;
 
+        AppClock _timer;
+
         /// brief   Glut annoyingly requires a C function for all its callbacks
         static void OnDisplay();
+
+        static void OnIdle();
     };
 }

@@ -1,4 +1,4 @@
-
+#include "AppClock.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 
@@ -26,7 +26,7 @@ namespace SolarGL
                                1.f,
                                100.f);
          
-         _camera.lookAt(vec3(0.f, 0.f, 15.f),  //camera location
+         _camera.lookAt(vec3(0.f, 0.f, 40.f),  //camera location
                        vec3(0.f, 0.f, 0.f),   //target location
                        vec3(0.f, 1.f, 0.f));  //up direction
 
@@ -36,8 +36,9 @@ namespace SolarGL
          Shader* shader = resMgr->getShader(".\\data\\shaders\\PerPixelLighting_VS.glsl",
                                              ".\\data\\shaders\\PerPixelLighting_FS.glsl");
 
-         //Shader* sunShader = resMgr->getShader(".\\data\\shaders\\SimpleImage_VS.glsl",
-         //                                      ".\\data\\shaders\\SimpleImage_FS.glsl");
+         Shader* sunShader = resMgr->getShader(".\\data\\shaders\\SimpleImage_VS.glsl",
+                                               ".\\data\\shaders\\SimpleImage_FS.glsl");
+         shader = sunShader;
 
          
          Mesh* mesh;
@@ -47,33 +48,40 @@ namespace SolarGL
          // Now we load the planets
          
          //Load the sun's mesh and texture
-         //mesh = resMgr->getMesh(".\\data\\meshes\\sun_mesh.json");
-         //texture = resMgr->getTexture(".\\data\\images\\sunMap.jpg");
-         //Model* sunModel = new Model();
-         //sunModel->setTexture(texture);
-         //sunModel->setMesh(mesh);
-         //sunModel->setShader(sunShader);
-         //_models["sun"] = sunModel;
+         mesh = resMgr->getMesh(".\\data\\meshes\\sun_mesh.json");
+         texture = resMgr->getTexture(".\\data\\images\\sunMap.jpg");
+         _sun = new Model();
+         _sun->setTexture(texture);
+         _sun->setMesh(mesh);
+         _sun->setShader(sunShader);
+         _sun->rotationSpeed = 5.f;   //degrees per second
+         _models["sun"] = _sun;
 
 
          mesh = resMgr->getMesh(".\\data\\meshes\\earth_mesh.json");
          texture = resMgr->getTexture(".\\data\\images\\earthMap.jpg");
-         Model* earthModel = new Model();
-         earthModel->setTexture(texture);
-         earthModel->setMesh(mesh);
-         earthModel->setShader(shader);
-         earthModel->getNode()->moveTo(vec3(10.f, 0.f, 0.f));
-         _models["earth"] = earthModel;
+         _earth = new Model();
+         _earth->setTexture(texture);
+         _earth->setMesh(mesh);
+         _earth->setShader(shader);
+         _earth->getNode()->moveTo(vec3(15.f, 0.f, 0.f));
+         _earth->getNode()->setParent(_sun->getNode());
+         _earth->rotationSpeed = 30.f;   //degrees per second
+         _models["earth"] = _earth;
 
 
          mesh = resMgr->getMesh(".\\data\\meshes\\moon_mesh.json");
-         texture = resMgr->getTexture(".\\data\\images\\moonMap.jpg");
-         Model* moonModel = new Model();
-         moonModel->setTexture(texture);
-         moonModel->setMesh(mesh);
-         moonModel->setShader(shader);
-         //moonModel->getNode()->moveTo(vec3(15.f, 5.f, 0.f));
-         _models["moon"] = moonModel;
+         texture = resMgr->getTexture(".\\data\\images\\moonMap.png");
+         _moon = new Model();
+         _moon->setTexture(texture);
+         _moon->setMesh(mesh);
+         _moon->setShader(shader);
+         _moon->getNode()->setParent(_earth->getNode());
+         _moon->getNode()->moveTo(vec3(5.f, 3.f, 0.f));         
+         _models["moon"] = _moon;
+
+         AppClock timer;
+         _timeAtLastFrame = timer.getTimeElapsed();
     }
 
     void Scene::update(const double& timeElapsed)
@@ -83,11 +91,20 @@ namespace SolarGL
         {
             Model* iterModel = iter->second;
             
-            
-            
+            double timeSinceLastFrame = timeElapsed - _timeAtLastFrame;
+
+            float earthRotation = ((float)timeSinceLastFrame)*_earth->rotationSpeed;
+            _earth->getNode()->rotate(vec3(0.f, earthRotation, 0.f));
+
+            float sunRotation = ((float)timeSinceLastFrame)*_sun->rotationSpeed;
+            _sun->getNode()->rotate(vec3(0.f, sunRotation, 0.f));
+
 
             iterModel->render(_camera.getProjectionMatrix(),
                               _camera.getViewMatrix());  
+
+            //Reset timer
+            _timeAtLastFrame = timeElapsed;
         }
     }
 }

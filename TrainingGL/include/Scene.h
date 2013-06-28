@@ -29,5 +29,13 @@ namespace SolarGL
 
         /// \brief  Camera used to render scene
         Camera  _camera;
+
+        /// \brief internal timer
+        double  _timeAtLastFrame;
+
+        Model* _sun;
+        Model* _earth;
+        Model* _moon;
+
     };
 }

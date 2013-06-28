@@ -26,9 +26,9 @@ namespace SolarGL
                                1.f,
                                100.f);
          
-         _camera.lookAt(vec3(0.f, 0.f, 40.f),  //camera location
+         _camera.lookAt(vec3(0.f, 10.f, 30.f),  //camera location
                        vec3(0.f, 0.f, 0.f),   //target location
-                       vec3(0.f, 1.f, 0.f));  //up direction
+                       vec3(0.f, 1.f, -5.f));  //up direction
 
          ResourceManager* resMgr = ResourceManager::get();
          
@@ -38,8 +38,9 @@ namespace SolarGL
 
          Shader* sunShader = resMgr->getShader(".\\data\\shaders\\SimpleImage_VS.glsl",
                                                ".\\data\\shaders\\SimpleImage_FS.glsl");
-         shader = sunShader;
-
+         //shader = sunShader;
+         _shaders[DYNAMIC_LIGHTING] = shader;
+         _shaders[STATIC_LIGHTING] = sunShader;
          
          Mesh* mesh;
          Texture* texture;
@@ -54,7 +55,7 @@ namespace SolarGL
          _sun->setTexture(texture);
          _sun->setMesh(mesh);
          _sun->setShader(sunShader);
-         _sun->rotationSpeed = 5.f;   //degrees per second
+         _sun->rotationSpeed = 15.f;   //degrees per second
          _models["sun"] = _sun;
 
 
@@ -107,4 +108,22 @@ namespace SolarGL
             _timeAtLastFrame = timeElapsed;
         }
     }
+
+    void Scene::toggleLightingMode()
+    {
+        LightingMode currentMode = _lightingMode;
+        if(_lightingMode==DYNAMIC_LIGHTING)
+        {
+            _lightingMode = STATIC_LIGHTING;
+        }
+        else
+        {
+            _lightingMode = DYNAMIC_LIGHTING;
+        }
+
+        _earth->setShader(_shaders[_lightingMode]);
+        _moon->setShader(_shaders[_lightingMode]);
+    }
+
+
 }

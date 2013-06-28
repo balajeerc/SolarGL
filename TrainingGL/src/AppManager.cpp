@@ -52,6 +52,7 @@ namespace SolarGL
         
         glutIdleFunc(AppManager::OnIdle);
         glutDisplayFunc(AppManager::OnDisplay);
+        glutKeyboardFunc(AppManager::OnKeyPress);
         glutMainLoop();
     }
 
@@ -69,10 +70,23 @@ namespace SolarGL
         glutPostRedisplay();
     }
 
+    void AppManager::handleKeyPress(unsigned char key, int x, int y)
+    {
+        if (key == 27)
+		    exit(0);
+	    else if (key=='l')
+            _scene.toggleLightingMode();
+    }
+
     void AppManager::OnDisplay()
     {
         _mainInstance->update();
         
+    }
+
+    void AppManager::OnKeyPress(unsigned char key, int x, int y)
+    {
+        _mainInstance->handleKeyPress(key, x, y);
     }
 
     void AppManager::OnIdle()

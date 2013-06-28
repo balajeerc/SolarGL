@@ -73,7 +73,7 @@ namespace SolarGL
         int viewMatLoc = glGetUniformLocation(shaderId, "v");
         int projectionMatLoc = glGetUniformLocation(shaderId, "p");
         int modelViewProjMat = glGetUniformLocation(shaderId, "mvpIn");
-        int invModelViewMatLoc = glGetUniformLocation(shaderId, "m_3x3_inv_transp");
+        int invModelMatLoc = glGetUniformLocation(shaderId, "m_3x3_inv_transp");
         int invViewMatLoc = glGetUniformLocation(shaderId, "v_inv");    
 
         int vertexLoc = glGetAttribLocation(shaderId, "v_coord");
@@ -84,7 +84,7 @@ namespace SolarGL
         glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, modelMatrixT.data());
         glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, viewMatrixT.data());
         glUniformMatrix4fv(projectionMatLoc, 1, GL_FALSE, projectionMatrixT.data());
-        glUniformMatrix3fv(invModelViewMatLoc, 1, GL_FALSE, modelViewInv3x3.data());
+        glUniformMatrix3fv(invModelMatLoc, 1, GL_FALSE, modelInv3x3.data());
         glUniformMatrix4fv(invViewMatLoc, 1, GL_FALSE, viewInv.data());
         glUniformMatrix4fv(modelViewProjMat, 1, GL_FALSE, modelViewProjectionMatrix.data());
 

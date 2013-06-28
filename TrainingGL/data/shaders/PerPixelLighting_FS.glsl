@@ -17,9 +17,9 @@ struct lightSource
 
 lightSource light0 = lightSource(
 	vec4(0.0,  0.0,  0.0, 1.0),		//position
-	vec4(0.8,  0.7,  0.33, 1.0),		//diffuse	
+	vec4(0.8,  0.7,  0.33, 1.0),	//diffuse	
 	vec4(1.0,  1.0,  1.0, 1.0),		//specular
-	0.0, 0.05, 0.0,
+	0.0, 0.015, 0.0,				//attenuation
 	180.0, 0.0,
 	vec3(0.0, 0.0, 0.0)
 );
@@ -92,7 +92,6 @@ void main()
 	else // light source on the right side
 	{
 		specularReflection = attenuation * vec3(light0.specular) * vec3(frontMaterial.specular) * (1.0 - textureColor.a)
-		  // for usual gloss maps: "* textureColor.a"
 		* pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), frontMaterial.shininess);
 	}
 

@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "Model.h"
 #include "Camera.h"
+#include "Shader.h"
 
 namespace SolarGL
 {
@@ -11,6 +12,12 @@ namespace SolarGL
     class Scene
     {
     public:
+        enum LightingMode
+        {
+            DYNAMIC_LIGHTING=0,
+            STATIC_LIGHTING=1,
+        };
+
         /// \brief  Constructor
         Scene();
         
@@ -22,6 +29,8 @@ namespace SolarGL
 
         /// \brief  Called repeatedly as part of main loop
         void update(const double& timeElapsed);
+
+        void toggleLightingMode();
 
     protected:
         /// \brief  All the models managed by scene
@@ -36,6 +45,9 @@ namespace SolarGL
         Model* _sun;
         Model* _earth;
         Model* _moon;
+
+        Shader* _shaders[2];
+        LightingMode _lightingMode;
 
     };
 }

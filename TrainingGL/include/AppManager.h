@@ -26,6 +26,8 @@ namespace SolarGL
         /// \brief  Returns a pointer to the timer
         AppClock& getTimer(){ return _timer; }
 
+        void handleKeyPress(unsigned char key, int x, int y);
+
     protected:
         static AppManager* _mainInstance;
 
@@ -37,5 +39,7 @@ namespace SolarGL
         static void OnDisplay();
 
         static void OnIdle();
+
+        static void OnKeyPress(unsigned char key, int x, int y);
     };
 }

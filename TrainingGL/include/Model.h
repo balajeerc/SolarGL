@@ -30,6 +30,8 @@ namespace SolarGL
         virtual void render(const mat4& projectionMatrix,
                            const mat4& viewMatrix);
 
+        
+
     protected:
         /// \brief mesh that this renderer will draw
         Mesh* _mesh;
